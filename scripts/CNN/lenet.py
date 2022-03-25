@@ -8,4 +8,9 @@ from keras import backend as K
 
 class LeNet:
     @staticmethod
-    def build
+    def build(numChannels, imgRows, imgCols, numClasse,
+        activation="relu", weightsPath=None):
+        # initialize the model
+        model = Sequential()
+        inputShape = (imgRows, imgCols, numChannels)
+        
