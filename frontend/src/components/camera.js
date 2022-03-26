@@ -2,6 +2,7 @@
 import React, { useRef, useState, useEffect } from "react"
 // 1. TODO - Import required model here
 // e.g. import * as tfmodel from "@tensorflow-models/tfmodel"
+import * as tf from "@tensorflow/tfjs"
 import * as cocossd from "@tensorflow-models/coco-ssd"
 import Webcam from "react-webcam"
 import "../App.css"
@@ -62,7 +63,7 @@ function Camera() {
       obj.forEach(obj => {
         if (obj.class === 'apple' || obj.class === 'banana') {
           // console.log('x: ' + obj.bbox[0].toString() + ', y: ' + obj.bbox[1].toString())
-          console.log('width: ' + obj.bbox[2].toString() + ', height: ' + obj.bbox[3].toString())
+          // console.log('width: ' + obj.bbox[2].toString() + ', height: ' + obj.bbox[3].toString())
           imageRef.current.getContext('2d').drawImage(video, obj.bbox[0], obj.bbox[1], obj.bbox[2], obj.bbox[3], 0, 0, obj.bbox[2] * 1.75, obj.bbox[3])
           imageRef.current.toBlob(blob => {
             imageLinkRef.current = blob
