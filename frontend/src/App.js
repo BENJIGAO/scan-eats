@@ -14,6 +14,7 @@ function App() {
   const [intervalId, setIntervalId] = useState(0)
   const [isWebcamOn, setIsWebcamOn] = useState(false)
   const [isFirstTime, setIsFirstTime] = useState(true)
+  const [imgFile, setImgFile] = useState('');
   const webcamRef = useRef(null)
   const canvasRef = useRef(null)
   const imageRef = useRef(null)
@@ -61,13 +62,14 @@ function App() {
       const obj = await net.detect(video)
 
       obj.forEach(obj => {
-        if (obj.class === 'apple' || obj.class === 'banana') {
+        if (obj.class === 'orange' || obj.class === 'banana') {
           // console.log('x: ' + obj.bbox[0].toString() + ', y: ' + obj.bbox[1].toString())
-          console.log('width: ' + obj.bbox[2].toString() + ', height: ' + obj.bbox[3].toString())
+          //console.log('width: ' + obj.bbox[2].toString() + ', height: ' + obj.bbox[3].toString())
           imageRef.current.getContext('2d').drawImage(video, obj.bbox[0], obj.bbox[1], obj.bbox[2], obj.bbox[3], 0, 0, obj.bbox[2] * 1.75, obj.bbox[3])
           imageRef.current.toBlob(blob => {
             imageLinkRef.current = blob
           })
+          
           clearInterval(intervalId)
         }
       })
