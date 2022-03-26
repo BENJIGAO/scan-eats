@@ -10,7 +10,7 @@ import "../App.css"
 // e.g. import { drawRect } from "./utils/drawRect.js";
 import { drawRect } from '../utils/drawRect'
 
-function Camera() {
+function ScanPage() {
   const [intervalId, setIntervalId] = useState(0)
   const [isWebcamOn, setIsWebcamOn] = useState(false)
   const [isFirstTime, setIsFirstTime] = useState(true)
@@ -139,4 +139,4 @@ function Camera() {
   );
 }
 
-export default Camera;
+export default ScanPage;
