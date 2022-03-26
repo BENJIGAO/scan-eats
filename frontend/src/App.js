@@ -11,8 +11,10 @@ import "./App.css"
 import { drawRect } from './utils/drawRect'
 
 function App() {
+  const [intervalId, setIntervalId] = useState(0)
   const webcamRef = useRef(null)
   const canvasRef = useRef(null)
+  const imageRef = useRef(null)
 
   // Main function
   const runCoco = async () => {
@@ -21,9 +23,9 @@ function App() {
     const net = await cocossd.load()
     
     //  Loop and detect hands
-    setInterval(() => {
+    setIntervalId(setInterval(() => {
       detect(net)
-    }, 10);
+    }, 10))
   };
 
   const detect = async (net) => {
@@ -51,6 +53,11 @@ function App() {
       const obj = await net.detect(video)
       console.log(obj)
 
+      if (obj.some(obj => obj.class === 'banana')) {
+        imageRef.current.getContext('2d').drawImage(video, 0, 0, videoWidth, videoHeight)
+        clearInterval(intervalId)
+      }
+
       // Draw mesh
       const ctx = canvasRef.current.getContext("2d")
 
@@ -63,18 +70,15 @@ function App() {
   useEffect(()=>{runCoco()},[]);
 
   return (
-    <div className="App">
+    <div className="App" style={{ display: 'flex', flexDirection: 'column' }}>
       <header className="App-header">
         <Webcam
           ref={webcamRef}
           muted={true} 
           style={{
             position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
+            top: 250,
+            left: 200,
             zindex: 9,
             width: 640,
             height: 480,
@@ -85,17 +89,25 @@ function App() {
           ref={canvasRef}
           style={{
             position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
+            top: 250,
+            left: 200,
             zindex: 8,
             width: 640,
             height: 480,
           }}
         />
       </header>
+      <canvas
+          ref={imageRef}
+          style={{
+            position: "absolute",
+            top: 250,
+            right: 200,
+            zindex: 8,
+            width: 640,
+            height: 480,
+          }}
+        />
     </div>
   );
 }
