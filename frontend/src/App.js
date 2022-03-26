@@ -51,12 +51,15 @@ function App() {
       // 4. TODO - Make Detections
       // e.g. const obj = await net.detect(video);
       const obj = await net.detect(video)
-      console.log(obj)
 
-      if (obj.some(obj => obj.class === 'banana')) {
-        imageRef.current.getContext('2d').drawImage(video, 0, 0, videoWidth, videoHeight)
-        clearInterval(intervalId)
-      }
+      obj.forEach(obj => {
+        if (obj.class === 'banana') {
+          // console.log('x: ' + obj.bbox[0].toString() + ', y: ' + obj.bbox[1].toString())
+          console.log('width: ' + obj.bbox[2].toString() + ', height: ' + obj.bbox[3].toString())
+          imageRef.current.getContext('2d').drawImage(video, obj.bbox[0], obj.bbox[1], obj.bbox[2], obj.bbox[3], 0, 0, obj.bbox[2] + 125, obj.bbox[3])
+          clearInterval(intervalId)
+        }
+      })
 
       // Draw mesh
       const ctx = canvasRef.current.getContext("2d")
@@ -104,7 +107,7 @@ function App() {
             top: 250,
             right: 200,
             zindex: 8,
-            width: 640,
+            width: 480,
             height: 480,
           }}
         />
