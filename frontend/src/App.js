@@ -1,9 +1,11 @@
 // Import dependencies
 import logo from './logo.svg';
 import './App.css';
+import "antd/dist/antd.css";
 import LandingPage from './components/LandingPage';
 import {Route, BrowserRouter as Router, Routes} from 'react-router-dom'
 import ScanPage from './components/ScanPage';
+
 function App() {
   return (
     <Router>

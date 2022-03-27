@@ -3,7 +3,6 @@
   height: 100vh;
   width: 100%;
   display: grid;
-
   grid-template-rows: 1%;
   grid-template-areas:
     "header"
@@ -27,18 +26,16 @@
   margin-left: 15%;
   height: 40%;
   width: 30%;
-
   color: #fff;
 }
 
 .scaneats {
   font-size: 4rem;
-  margin: 1rem;
+  margin: 0.8rem;
 }
 
 .subtext {
-  margin: 1.5rem;
-
+  margin: 1rem;
   margin-top: 100%;
   font-size: 1.5rem;
 }

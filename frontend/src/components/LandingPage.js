@@ -1,31 +1,15 @@
 import React from "react";
-import styled from "styled-components";
-
 import "./landingPage.css";
-import { useNavigate } from 'react-router-dom'
-
-const Button = styled.div`
-  margin: 5%;
-  margin-right:60%;
-  padding: 2rem;
-  font-size: 1rem;
-  border: 3px solid #fff;
-  border-radius: 3px;
-  outline: none;
-  cursor: pointer;
-  background: transparent;
-  color: #fff;
-`;
-
+import { useNavigate } from "react-router-dom";
+import { Button } from "antd";
 
 function LandingPage() {
-  
-    const navigate = useNavigate();
-  
-    const handleOnSubmit = () => {
-      navigate('/scan');
-    };
-  
+  const navigate = useNavigate();
+
+  const handleOnSubmit = () => {
+    navigate("/scan");
+  };
+
   return (
     <div className="container">
       <div className="header"></div>
@@ -36,8 +20,9 @@ function LandingPage() {
           <div>
             <text className="subtext">Scan food to get started</text>
           </div>
-          <Button onClick={handleOnSubmit}>
-          <text style={{marginLeft:"17%"}}>Get started</text>
+
+          <Button type="link" onClick={handleOnSubmit}>
+            Click to get started
           </Button>
         </div>
       </div>

@@ -10,23 +10,8 @@ import "../App.css";
 // e.g. import { drawRect } from "./utils/drawRect.js";
 import { drawRect } from "../utils/drawRect";
 import styled from "styled-components";
-import { useNavigate } from 'react-router-dom'
-
-const Button = styled.div`
-  margin: 1%;
-  margin-top: 10%;
-  margin-left: 10%;
-  padding-top: 10%;
-  width: 80%;
-  height: 5%;
-  border: 2px solid #fff;
-  border-radius: 4px;
-  cursor: pointer;
-  background: transparent;
-  text-align: center;
-  color: #fff;
-`;
-
+import { useNavigate } from "react-router-dom";
+import { Button, Card } from "antd";
 
 function ScanPage() {
   const [intervalId, setIntervalId] = useState(0);
@@ -141,17 +126,33 @@ function ScanPage() {
   };
 
   const navigate = useNavigate();
-  
+
   const handleOnSubmit = () => {
-    navigate('/');
+    navigate("/");
   };
 
   return (
     <div>
-    <div className="container">
-      <div className="header"></div>
-      <div className="content">
-        <header className="App-header">
+      <div className="container">
+        <div className="header"></div>
+
+        <div className="content">
+          <Button
+            type="primary"
+            style={{ margin: "0.5%" }}
+            onClick={handleOnSubmit}
+            size="default"
+          >
+            Home
+          </Button>
+          <Button
+            type="primary"
+            style={{ margin: "0.5%" }}
+            onClick={toggleCamera}
+          >
+            {isWebcamOn ? "Camera: ON" : "Camera: OFF"}
+          </Button>
+
           {isWebcamOn && (
             <>
               <Webcam
@@ -179,28 +180,20 @@ function ScanPage() {
               />
             </>
           )}
-        </header>
-        <canvas
-          ref={imageRef}
-          style={{
-            position: "absolute",
-            top: 250,
-            right: 200,
-            zindex: 8,
-            width: 480,
-            height: 480,
-          }}
-        />
-        <div className= "buttons">
-        <Button onClick={handleOnSubmit}>
-          Home
-        </Button>
-        <Button onClick={toggleCamera}>
-          {isWebcamOn ? "Turn Camera Off" : "Turn Camera On"}
-        </Button>
+        
+          <canvas
+            ref={imageRef}
+            style={{
+              position: "absolute",
+              top: 250,
+              right: 200,
+              zindex: 8,
+              width: 480,
+              height: 480,
+            }}
+          />
         </div>
       </div>
-    </div>
     </div>
   );
 }
