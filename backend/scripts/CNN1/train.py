@@ -96,10 +96,10 @@ model.fit(
 
 # save the model to disk
 print("[INFO] serializing network...")
-model.save("banana.model", save_format="h5")
+model.save("orange.model", save_format="h5")
 # save the label binarizer to disk
 print("[INFO] serializing label binarizer...")
-f = open("banana.pickle", "wb")
+f = open("orange.pickle", "wb")
 f.write(pickle.dumps(lb))
 f.close()
 

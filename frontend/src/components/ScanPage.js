@@ -114,11 +114,15 @@ function ScanPage() {
         if (obj.class === 'apple' || obj.class === 'banana') {
           // console.log('x: ' + obj.bbox[0].toString() + ', y: ' + obj.bbox[1].toString())
           // console.log('width: ' + obj.bbox[2].toString() + ', height: ' + obj.bbox[3].toString())
-          imageRef.current.getContext('2d').drawImage(video, obj.bbox[0], obj.bbox[1], obj.bbox[2], obj.bbox[3], 0, 0, obj.bbox[2] * 1.75, obj.bbox[3])
-          imageRef.current.toBlob(blob => {
-            imageLinkRef.current = blob
-          })
-          clearInterval(intervalId)
+          if (!imageLinkRef.current) {
+            imageRef.current.getContext('2d').drawImage(video, obj.bbox[0], obj.bbox[1], obj.bbox[2], obj.bbox[3], 0, 0, obj.bbox[2] * 1.75, obj.bbox[3])
+            imageRef.current.toBlob(blob => {
+              imageLinkRef.current = blob
+            })
+          } else {
+            makeAPIRequest(obj.class)
+          }
+          
         }
       })
 
@@ -128,6 +132,23 @@ function ScanPage() {
       // 5. TODO - Update drawing utility
       // drawSomething(obj, ctx)
       drawRect(obj, ctx)
+    }
+  }
+
+  const makeAPIRequest = async (foodName) => {
+    const formData = new FormData()
+    formData.append('image', imageLinkRef.current)
+
+    const response = await fetch('/classify/'.concat(foodName), {
+      method: "POST",
+      body: formData
+    })
+
+    if (response.status === 200) {
+      const text = await response.text()
+      console.log(text)
+    } else {
+      console.log('Error with POST request')
     }
   }
 
