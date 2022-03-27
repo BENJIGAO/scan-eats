@@ -26,7 +26,7 @@ const ColumnLeft = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: 5rem 2rem;
+  padding: 10rem 9rem;
 
   h1 {
     margin-bottom: 0.5rem;

@@ -9,6 +9,56 @@ import "../App.css"
 // 2. TODO - Import drawing utility here
 // e.g. import { drawRect } from "./utils/drawRect.js";
 import { drawRect } from '../utils/drawRect'
+import styled from 'styled-components';
+
+const Section = styled.section`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #131313;
+`;
+
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+  padding: 3rem calc((100vw - 1300px) / 2);
+
+  @media screen and (max-width: 768px) {
+    grid-grid-template-columns: 1fr;
+  }
+`;
+
+const Button = styled.div`
+padding: 1rem 3rem;
+  font-size: 1rem;
+  border: 2px solid #fff;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  background: transparent;
+  color: #fff;
+`;
+
+const ColumnLeft = styled.div`
+  display: flex;
+  color: #fff;
+  flex-direction: column;
+  justify-content: top;
+  align-items: flex-start;
+  padding: 9rem 100rem;
+
+  h1 {
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+  }
+  p {
+    margin: 2rem 0;
+    font-size: 4rem;
+    line-height: 1.1;
+  }
+`;
 
 function ScanPage() {
   const [intervalId, setIntervalId] = useState(0)
@@ -131,10 +181,15 @@ function ScanPage() {
             height: 480,
           }}
       />
-      <button onClick={toggleCamera}>
-        {isWebcamOn ? 'Turn Camera off' : 'Turn Camera On'}
-      </button>
-
+      <Section>
+        <Container>
+          <ColumnLeft>
+            <Button onClick={toggleCamera}>
+              {isWebcamOn ? 'Turn Camera off' : 'Turn Camera On'}
+            </Button>
+          </ColumnLeft>
+        </Container>
+      </Section>
     </div>
   );
 }
