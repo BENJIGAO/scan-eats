@@ -1,0 +1,44 @@
+.container {
+  background-color: #000000;
+  height: 100vh;
+  width: 100%;
+  display: grid;
+
+  grid-template-rows: 1%;
+  grid-template-areas:
+    "header"
+    "content";
+}
+
+.header {
+  background-color: #ffffff;
+  grid-area: header;
+}
+
+.content {
+  display: flex;
+  background-color: #131313;
+  align-content: center;
+  grid-area: content;
+}
+
+.box {
+  margin-top: 17%;
+  margin-left: 15%;
+  height: 40%;
+  width: 30%;
+
+  color: #fff;
+}
+
+.scaneats {
+  font-size: 4rem;
+  margin: 1rem;
+}
+
+.subtext {
+  margin: 1.5rem;
+
+  margin-top: 100%;
+  font-size: 1.5rem;
+}

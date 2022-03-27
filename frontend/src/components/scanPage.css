@@ -1,0 +1,29 @@
+.container {
+    background-color: #000000;
+    height: 100vh;
+    width: 100%;
+    display: grid;
+  
+    grid-template-rows: 1%;
+    grid-template-areas:
+      "header"
+      "buttons"
+      "content";
+  }
+  
+  .header {
+    background-color: #ffffff;
+    grid-area: header;
+  }
+
+  .buttons {
+    margin-left:100%;
+    background-color: #ffffff;
+    grid-area: buttons;
+  }
+  
+  .content {
+    background-color: #131313;
+  }
+
+ 
