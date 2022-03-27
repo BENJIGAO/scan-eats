@@ -22,7 +22,7 @@ const Section = styled.section`
 const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 100vh;
+  height: 70vh;
   padding: 3rem calc((100vw - 1300px) / 2);
 
   @media screen and (max-width: 768px) {
@@ -111,7 +111,7 @@ function ScanPage() {
       const obj = await net.detect(video)
 
       obj.forEach(obj => {
-        if (obj.class === 'apple' || obj.class === 'banana') {
+        if (obj.class === 'apple' || obj.class === 'bottle') {
           // console.log('x: ' + obj.bbox[0].toString() + ', y: ' + obj.bbox[1].toString())
           // console.log('width: ' + obj.bbox[2].toString() + ', height: ' + obj.bbox[3].toString())
           if (!imageLinkRef.current) {

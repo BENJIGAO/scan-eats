@@ -12,7 +12,7 @@ const Section = styled.section`
 const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 100vh;
+  height: 70vh;
   padding: 3rem calc((100vw - 1300px) / 2);
 
   @media screen and (max-width: 768px) {
@@ -76,7 +76,7 @@ function LandingPage() {
                 <p>ScanEATS</p>
                 <h1>Scan food to get started</h1>
                 <Button>
-                  <Link to='/home'>
+                  <Link to='/scan'>
                     Get Started
                   </Link>
                 </Button>

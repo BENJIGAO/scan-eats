@@ -9,7 +9,7 @@ function App() {
     <Router>
         <Routes>
           <Route path='/' element={<LandingPage />}/>
-          <Route path='/home' exact element={<ScanPage />} />
+          <Route path='/scan' exact element={<ScanPage />} />
         </Routes>
     </Router>
   );
