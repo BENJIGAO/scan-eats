@@ -11,33 +11,34 @@ import "../App.css";
 import { drawRect } from "../utils/drawRect";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { Button, Card } from "antd";
+import { Button, Spin, Modal } from "antd";
 
 function ScanPage() {
-  const [intervalId, setIntervalId] = useState(0);
-  const [isWebcamOn, setIsWebcamOn] = useState(false);
-  const [isFirstTime, setIsFirstTime] = useState(true);
-  const webcamRef = useRef(null);
-  const canvasRef = useRef(null);
-  const imageRef = useRef(null);
-  const imageLinkRef = useRef(null);
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isScanActive, setIsScanActive] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isWebcamOn, setIsWebcamOn] = useState(false)
+  const [result, setResult] = useState('')
+  const [isFirstTime, setIsFirstTime] = useState(true)
+  const webcamRef = useRef(null)
+  const canvasRef = useRef(null)
+  let imageRef = useRef(null)
+  let imageLinkRef = useRef(null)
 
   useEffect(() => {
     runCoco();
-  }, [isFirstTime]);
+  }, [isFirstTime])
 
   // Main function
   const runCoco = async () => {
     // 3. TODO - Load network
     // e.g. const net = await cocossd.load()
-    const net = await cocossd.load();
+    const net = await cocossd.load()
 
     //  Loop and detect hands
-    setIntervalId(
-      setInterval(() => {
-        detect(net);
-      }, 10)
-    );
+    setInterval(() => {
+      detect(net)
+    }, 10)
   };
 
   const detect = async (net) => {
@@ -45,30 +46,28 @@ function ScanPage() {
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
-      webcamRef.current.video.readyState === 4 &&
-      isWebcamOn
+      webcamRef.current.video.readyState === 4
     ) {
       // Get Video Properties
-      const video = webcamRef.current.video;
-      const videoWidth = webcamRef.current.video.videoWidth;
-      const videoHeight = webcamRef.current.video.videoHeight;
+      const video = webcamRef.current.video
+      const videoWidth = webcamRef.current.video.videoWidth
+      const videoHeight = webcamRef.current.video.videoHeight
 
       // Set video width
-      webcamRef.current.video.width = videoWidth;
-      webcamRef.current.video.height = videoHeight;
+      webcamRef.current.video.width = videoWidth
+      webcamRef.current.video.height = videoHeight
 
       // Set canvas height and width
-      canvasRef.current.width = videoWidth;
-      canvasRef.current.height = videoHeight;
+      canvasRef.current.width = videoWidth
+      canvasRef.current.height = videoHeight
 
       // 4. TODO - Make Detections
-      // e.g. const obj = await net.detect(video);
-      const obj = await net.detect(video);
+      // e.g. const obj = await net.detect(video)
+      const obj = await net.detect(video)
 
       obj.forEach((obj) => {
-        if (obj.class === "apple" || obj.class === "bottle") {
-          // console.log('x: ' + obj.bbox[0].toString() + ', y: ' + obj.bbox[1].toString())
-          // console.log('width: ' + obj.bbox[2].toString() + ', height: ' + obj.bbox[3].toString())
+        if (obj.class === "apple" || obj.class === "banana") {
+          const factor = obj.class === 'apple' ? 1.75 : 2.25
           if (!imageLinkRef.current) {
             imageRef.current
               .getContext("2d")
@@ -80,30 +79,34 @@ function ScanPage() {
                 obj.bbox[3],
                 0,
                 0,
-                obj.bbox[2] * 1.75,
+                obj.bbox[2] * factor,
                 obj.bbox[3]
               );
             imageRef.current.toBlob((blob) => {
-              imageLinkRef.current = blob;
-            });
-          } else {
-            makeAPIRequest(obj.class);
+              imageLinkRef.current = blob
+              makeAPIRequest(obj.class)
+            })
+            setIsScanActive(false)
           }
         }
       });
 
+      if (!isScanActive) {
+        return
+      }
+
       // Draw mesh
-      const ctx = canvasRef.current.getContext("2d");
+      const ctx = canvasRef.current.getContext("2d")
 
       // 5. TODO - Update drawing utility
       // drawSomething(obj, ctx)
-      drawRect(obj, ctx);
+      drawRect(obj, ctx)
     }
   };
 
   const makeAPIRequest = async (foodName) => {
-    const formData = new FormData();
-    formData.append("image", imageLinkRef.current);
+    const formData = new FormData()
+    formData.append("image", imageLinkRef.current)
 
     const response = await fetch("/classify/".concat(foodName), {
       method: "POST",
@@ -111,28 +114,42 @@ function ScanPage() {
     });
 
     if (response.status === 200) {
-      const text = await response.text();
-      console.log(text);
+      const text = await response.text()
+      setResult(text)
+      setIsLoading(false)
+      setIsModalVisible(true)
     } else {
-      console.log("Error with POST request");
+      console.log("Error with POST request")
     }
   };
 
   const toggleCamera = () => {
-    setIsWebcamOn(!isWebcamOn);
+    setIsWebcamOn(!isWebcamOn)
     if (isFirstTime) {
-      setIsFirstTime(false);
+      setIsFirstTime(false)
     }
   };
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleOnSubmit = () => {
     navigate("/");
-  };
+  }
+
+  const handleRescan = () => {
+    setIsScanActive(true)
+    imageRef = null
+    imageLinkRef.current = null
+    imageLinkRef = null
+    setResult('')
+    setIsLoading(true)
+  }
 
   return (
-    <div>
+    <Spin spinning={isLoading && !isScanActive}>
+      <Modal title="Results" visible={isModalVisible} onOk={() => setIsModalVisible(false)} onCancel={() => setIsModalVisible(false)}>
+        <p>{result}</p>
+      </Modal>
       <div className="container">
         <div className="header"></div>
 
@@ -152,7 +169,15 @@ function ScanPage() {
           >
             {isWebcamOn ? "Camera: ON" : "Camera: OFF"}
           </Button>
-
+          {!isScanActive &&
+            <Button
+            type="primary"
+            style={{ margin: "0.5%" }}
+            onClick={handleRescan}
+            >
+              Scan Again
+            </Button>
+          }
           {isWebcamOn && (
             <>
               <Webcam
@@ -180,7 +205,6 @@ function ScanPage() {
               />
             </>
           )}
-        
           <canvas
             ref={imageRef}
             style={{
@@ -194,7 +218,7 @@ function ScanPage() {
           />
         </div>
       </div>
-    </div>
+    </Spin>
   );
 }
 

@@ -2,6 +2,7 @@ export const drawRect = (detections, ctx) => {
   detections.forEach(prediction => {
     const [x, y, width, height] = prediction['bbox']
     const text = prediction['class']
+    if (text !== 'apple' && text !== 'banana') return
 
     const color = 'green'
     ctx.strokeStyle = color

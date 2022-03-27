@@ -23,19 +23,20 @@ def index(path=''):
         return render_template("index.html")
 
 @app.route('/classify/banana', methods=['POST'])
-def apple_classify():
-    if (request.files['image']):
-        image = request.files['image']
-
-        result = predict_image(image, r'C:\Users\bgao\scan-eats\backend\scripts\CNN1\banana.model')
-        print('Model classification: ' + result)
-        return result
-
-@app.route('/classify/apple', methods=['POST'])
 def banana_classify():
     if (request.files['image']):
         image = request.files['image']
 
-        result = predict_image(image, r'C:\Users\bgao\scan-eats\backend\scripts\CNN1\apple.model')
+        result = predict_image(image, os.path.abspath(r"..\backend\scripts\CNN1\banana.model"), "banana")
+        print('Model classification: ' + result)
+        return result
+
+@app.route('/classify/apple', methods=['POST'])
+def apple_classify():
+    if (request.files['image']):
+        image = request.files['image']
+        print(os.path.abspath("scripts\CNN1\apple.model"))
+
+        result = predict_image(image, os.path.abspath(r"..\backend\scripts\CNN1\apple.model"), "apple")
         print('Model classification: ' + result)
         return result

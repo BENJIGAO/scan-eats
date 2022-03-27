@@ -13,7 +13,7 @@ import cv2
 import os
 
 
-def predict_image(file_path, model_path):
+def predict_image(file_path, model_path, food_name):
 
     # img1 = image.load_img(file_path, target_size=(150, 150))
     # Y = image.img_to_array(file_path)
@@ -32,11 +32,11 @@ def predict_image(file_path, model_path):
     processed_image = preprocess_input(image_batch, mode='caffe')
     preds = model.predict(processed_image)
 
-    if model_path == "orange.model":
+    if food_name == "orange" or food_name == "banana":
         if preds == 1:
-            return "fresh"
-        else: 
             return "stale"
+        else: 
+            return "fresh"
     else:
         if preds == 1:
             return "stale"
