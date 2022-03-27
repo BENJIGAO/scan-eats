@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request
-from backend.scripts.CNN.classify import classify_image
-from backend.reverse_proxy import proxy_request
+from scripts.CNN1.classify import predict_image
+from reverse_proxy import proxy_request
 
 MODE = os.getenv('FLASK_ENV')
 DEV_SERVER_URL = "http://localhost:3000/"
@@ -22,11 +22,20 @@ def index(path=''):
     else:
         return render_template("index.html")
 
-@app.route('/classify', methods=['POST'])
-def classify():
+@app.route('/classify/banana', methods=['POST'])
+def apple_classify():
     if (request.files['image']):
-        image_path = request.files(['image'])
+        image = request.files['image']
 
-        result = classify_image(image_path)
+        result = predict_image(image, r'C:\Users\bgao\scan-eats\backend\scripts\CNN1\banana.model')
+        print('Model classification: ' + result)
+        return result
+
+@app.route('/classify/apple', methods=['POST'])
+def banana_classify():
+    if (request.files['image']):
+        image = request.files['image']
+
+        result = predict_image(image, r'C:\Users\bgao\scan-eats\backend\scripts\CNN1\apple.model')
         print('Model classification: ' + result)
         return result
