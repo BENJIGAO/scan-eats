@@ -23,7 +23,7 @@
 }
 
 .box {
-  margin-top: 17%;
+  margin-top: 30%;
   margin-left: 15%;
   height: 40%;
   width: 30%;
@@ -40,6 +40,7 @@
 }
 
 .picture {
-  margin-left: 50%;
+  margin-left: 70%;
+  margin-top: 30%;
   grid-area: picture;
 }
